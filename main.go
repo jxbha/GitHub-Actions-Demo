@@ -163,6 +163,15 @@ func listWidget(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprint(w, string(result))
 }
 
+func health(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprint(w, "ok")
+}
+
+func version(w http.ResponseWriter, req *http.Request) {
+	ver := os.Getenv("VERSION")
+	fmt.Fprint(w, ver)
+}
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -171,6 +180,8 @@ func main() {
 	mux.HandleFunc("/update/{id}", updateWidget)
 	mux.HandleFunc("/delete/{id}", deleteWidget)
 	mux.HandleFunc("/{id}", getWidget)
+	mux.HandleFunc("/health", health)
+	mux.HandleFunc("/version", version)
 
 	port := ":4040"
 	fmt.Printf("listening on %s...\n", port)
